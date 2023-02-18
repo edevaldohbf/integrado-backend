@@ -1,0 +1,27 @@
+{
+  "name": "integrado-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:edevaldohbf/integrado-backend.git",
+  "author": "Edevaldo <edevaldohbfilho@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.9.2"
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.34.0",
+    "nodemon": "^2.0.20"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
