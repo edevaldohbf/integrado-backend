@@ -1,15 +1,25 @@
 import { Router } from 'express';
 import UsersModel from './users.model.js';
 import { success, badRequest } from '../utils/reponsePattern/responseStatusCode.js';
+import { hashPassword } from '../utils/password.js';
 
 class UsersService {
     async create (reqUser) {
+        const passwordDefault = Math.abs(Math.floor(Math.random() * 999999) + 100000);
+        const hashedPassword = await hashPassword(String(passwordDefault));
+
 		const createdUser = await UsersModel.create({
             ...reqUser,
+            password: hashedPassword,
+            isActive: true,
+            isFirstAcess: true,
             createdAt: new Date
         });
 
-        return createdUser;
+        return {
+            ...createdUser._doc,
+            password: passwordDefault
+        };
     }
 
     async readAll (filter) {
@@ -19,7 +29,7 @@ class UsersService {
     }
 
     async readById (id) {
-        const readUser = await UsersModel.findOne({ _id: id }).select('-__v');
+        const readUser = await UsersModel.findOne({ _id: id }).select('-__v -password');
 
         if(!readUser) {
             throw {
@@ -35,7 +45,7 @@ class UsersService {
         const updatedUser = await UsersModel.findByIdAndUpdate({ _id: id }, {
             ...reqUser,
             updatedAt: new Date
-    }).select('-__v');
+    }).select('-__v -password');
 
         if(!updatedUser) {
             throw {

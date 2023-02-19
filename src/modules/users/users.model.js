@@ -8,9 +8,9 @@ const UsersSchema = new Schema({
 	name: String,
 	email: String,
 	password: String,
-	isActive: String,
-	isAdmin: String,
-	isFirstAcess: String,
+	isActive: Boolean,
+	isAdmin: Boolean,
+	isFirstAcess: Boolean,
 	createdAt: Date,
 	updatedAt: Date
 });

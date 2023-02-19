@@ -82,8 +82,7 @@ class UsersController {
         try {
             const { id } = req.params;
 
-
-            if(!id) {
+            if ((!id) || (req.body.password)){
                 throw {
                     statusCode: statusCode.badRequest,
                     message: message[0]
