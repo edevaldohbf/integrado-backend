@@ -4,7 +4,10 @@ import { success, badRequest } from '../utils/reponsePattern/responseStatusCode.
 
 class UniversitiesService {
     async create (reqUniversity) {
-		const createdUniversity = await UniversitiesModel.create(reqUniversity);
+		const createdUniversity = await UniversitiesModel.create({
+            ...reqUniversity,
+            createdAt: new Date
+        });
 
         return createdUniversity;
     }
@@ -16,11 +19,13 @@ class UniversitiesService {
     }
 
     async readById (id) {
-        const readUniversity = await UniversitiesModel.findOne({ _id: id }).select('-__v');
+        const readUniversity = await UniversitiesModel.findOne({
+            _id: id
+        }).select('-__v');
 
         if(!readUniversity) {
             throw {
-                statusCode: statusCode.badRequest,
+                statusCode: badRequest,
                 message: message[0]
             };
         }
@@ -29,16 +34,19 @@ class UniversitiesService {
     }
 
     async update (id, reqUniversity) {
-        const updatedUniversity = await UniversitiesModel.findByIdAndUpdate({ _id: id }, reqUniversity).select('-__v');
+        const updatedUniversity = await UniversitiesModel.findByIdAndUpdate({ _id: id }, {
+            ...reqUniversity,
+            updatedAt: new Date
+        }).select('-__v');
 
         if(!updatedUniversity) {
             throw {
-                statusCode: statusCode.badRequest,
+                statusCode: badRequest,
                 message: message[0]
             };
         }
 
-        return { id: updatedUniversity._id };
+        return { id: updatedUniversity._id};
     }
 
     async delete (id) {
@@ -46,7 +54,7 @@ class UniversitiesService {
 
         if(!deletedUniversity) {
             throw {
-                statusCode: statusCode.badRequest,
+                statusCode: badRequest,
                 message: message[0]
             };
         }

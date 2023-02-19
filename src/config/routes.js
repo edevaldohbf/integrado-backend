@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import { success } from '../modules/utils/reponsePattern/responseStatusCode.js'
-import { universities } from '../modules/index.js';
+import { universities, users } from '../modules/index.js';
 
 const router = Router();
 
@@ -11,6 +11,13 @@ router.get('/', (req, res) => {
         data: 'API HOME'
 	})
 });
+
+// University CRUD
+router.post('/users', users.create)
+router.get('/users', users.readAll)
+router.get('/users/:id', users.readById)
+router.put('/users/:id', users.update)
+router.delete('/users/:id', users.delete)
 
 // University CRUD
 router.post('/universities', universities.create)
