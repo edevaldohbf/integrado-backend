@@ -1,6 +1,6 @@
 import ResetPasswordModel from './resetPassword.model.js';
 import UsersModel from '../users/users.model.js';
-import { success, badRequest } from '../utils/reponsePattern/responseStatusCode.js';
+import { success, badRequest, unauthorized } from '../utils/reponsePattern/responseStatusCode.js';
 import message from '../utils/reponsePattern/responseMessage.js';
 import { hashPassword, generatePassword } from '../utils/password.js'
 import sendEmail from '../email/email.service.js';
@@ -45,16 +45,16 @@ class ResetPasswordService {
     async action (oldPassword, newPassword) {
         if ((!oldPassword) || (!newPassword) || (oldPassword == newPassword)) {
             throw {
-                statusCode: statusCode.unauthorized,
+                statusCode: unauthorized,
                 message: message[0]
             };
         }
 
         const objResetPassword = await ResetPasswordModel.findOne({ token: oldPassword });
 
-        if ((!objResetPassword) || (objResetPassword.isUsed)) {
+        if ((!objResetPassword) || (objResetPassword?.isUsed)) {
             throw {
-                statusCode: statusCode.unauthorized,
+                statusCode: unauthorized,
                 message: message[7]
             };
         }
