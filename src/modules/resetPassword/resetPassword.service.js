@@ -37,7 +37,7 @@ class ResetPasswordService {
             isFirstAcess: true
         });
 
-        await sendEmail(['edevaldohbfilho@gmail.com', ], token); // email estático pq os usuários ainda não possuem e-mails reais
+        await sendEmail([resetPasswordUser.email, ], token); // email estático pq os usuários ainda não possuem e-mails reais
         
         return true;
     }

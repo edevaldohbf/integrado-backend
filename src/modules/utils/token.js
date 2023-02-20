@@ -5,11 +5,12 @@ import message from './reponsePattern/responseMessage.js';
 
 const { sign, decode, verify } = jsonwebtoken;
 
-export async function generateToken(id, email, type, time) {
+export async function generateToken(id, email, isAdmin, type, time) {
     const token = sign(
         {
             id,
             email,
+            isAdmin,
             type
         }, jwtSecret, {
         expiresIn: time
@@ -39,6 +40,8 @@ export async function verifyToken(req, res, next) {
                 message: message[2]
             };
         }
+
+        req.isAdmin = data.isAdmin
 
         try {
             verify(token, jwtSecret);

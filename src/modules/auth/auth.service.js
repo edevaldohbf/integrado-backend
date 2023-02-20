@@ -45,8 +45,8 @@ class UniversitiesService {
             token.resetPasswordToken = await generateToken(authUser._id, authUser.email, 'reset', accessTokenTimeExp)
         }
         else {
-            token.accessToken = await generateToken(authUser._id, authUser.email, 'access', accessTokenTimeExp);
-            token.refreshToken = await generateToken(authUser._id, authUser.email, 'refresh', refreshTokenTimeExp);
+            token.accessToken = await generateToken(authUser._id, authUser.email, authUser.isAdmin, 'access', accessTokenTimeExp);
+            token.refreshToken = await generateToken(authUser._id, authUser.email, authUser.isAdmin, 'refresh', refreshTokenTimeExp);
         }
         
         return token;
@@ -80,7 +80,7 @@ class UniversitiesService {
             };
         }
 
-        token.accessToken = await generateToken(refreshUser.id, refreshUser.email, 'access', accessTokenTimeExp);
+        token.accessToken = await generateToken(refreshUser.id, refreshUser.email, refreshUser.isAdmin, 'access', accessTokenTimeExp);
         
         return token;
     }
