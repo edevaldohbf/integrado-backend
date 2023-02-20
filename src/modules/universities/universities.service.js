@@ -12,10 +12,31 @@ class UniversitiesService {
         return createdUniversity;
     }
 
-    async readAll (filter) {
-        const readUniversities = await UniversitiesModel.find(filter).select('_id name stateProvince country');
+    async readAll (filter, reqPage) {
+        const perPage = 20;
+        const page = Math.max(0, reqPage ? reqPage - 1 : 0);
 
-        return readUniversities;
+        const readUniversities = await UniversitiesModel
+            .find(filter)
+            .select('_id name stateProvince country')
+            .limit(perPage)
+            .skip(perPage * page)
+            .sort({
+                name: 'asc'
+            });
+
+        const totalItems = await UniversitiesModel.count();
+
+        return {
+            ...readUniversities,
+            meta: {
+                totalItems: totalItems,
+                itemPageCount: readUniversities.length,
+                maxItemsPerPage: perPage,
+                totalPages: Math.ceil(totalItems / perPage),
+                currentPage: page + 1
+            }
+        };
     }
 
     async readById (id) {

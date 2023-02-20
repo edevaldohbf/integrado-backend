@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { success } from '../utils/reponsePattern/responseStatusCode.js';
+import { success, badRequest } from '../utils/reponsePattern/responseStatusCode.js';
+import message from '../utils/reponsePattern/responseMessage.js'
 import UniversitiesService from './universities.service.js';
 
 class UniversitiesController {
@@ -29,7 +30,7 @@ class UniversitiesController {
 
     async readAll (req, res) {
         try {
-            const { country } = req.query;
+            let { country, page } = await req.query;
 
             const filter = {};
 
@@ -37,11 +38,11 @@ class UniversitiesController {
                 filter.country = await country.charAt(0).toUpperCase() + await country.slice(1).toLowerCase();
             }
 
-            let aux = await UniversitiesService.readAll(filter);
+            let aux = await UniversitiesService.readAll(filter, page);
 
             if(!aux) {
                 throw {
-                    statusCode: statusCode.badRequest,
+                    statusCode: badRequest,
                     message: message[0]
                 };
             }

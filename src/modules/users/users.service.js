@@ -22,10 +22,31 @@ class UsersService {
         };
     }
 
-    async readAll (filter) {
-        const readUsers = await UsersModel.find(filter).select('_id name email isActive');
+    async readAll (filter, reqPage) {
+        const perPage = 20;
+        const page = Math.max(0, reqPage ? reqPage - 1 : 0);        
 
-        return readUsers;
+        const readUsers = await UsersModel
+            .find(filter)
+            .select('_id name email isActive')
+            .limit(perPage)
+            .skip(perPage * page)
+            .sort({
+                name: 'asc'
+            });
+
+        const totalItems = await UsersModel.count();
+
+        return {
+            ...readUsers,
+            meta: {
+                totalItems: totalItems,
+                itemPageCount: readUsers.length,
+                maxItemsPerPage: perPage,
+                totalPages: Math.ceil(totalItems / perPage),
+                currentPage: page + 1
+            }
+        };
     }
 
     async readById (id) {

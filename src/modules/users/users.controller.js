@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { success } from '../utils/reponsePattern/responseStatusCode.js';
+import { success, badRequest } from '../utils/reponsePattern/responseStatusCode.js';
 import UsersService from './users.service.js';
 
 class UsersController {
@@ -29,19 +29,15 @@ class UsersController {
 
     async readAll (req, res) {
         try {
-            const { country } = req.query;
+            const { page } = req.query;
 
             const filter = {};
 
-            if(country) {
-                filter.country = await country.charAt(0).toUpperCase() + await country.slice(1).toLowerCase();
-            }
-
-            let aux = await UsersService.readAll(filter);
+            let aux = await UsersService.readAll(filter, page);
 
             if(!aux) {
                 throw {
-                    statusCode: statusCode.badRequest,
+                    statusCode: badRequest,
                     message: message[0]
                 };
             }
