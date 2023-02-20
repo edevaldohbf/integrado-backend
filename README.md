@@ -56,39 +56,47 @@ Sendo o primeiro login de um usuário ou o primeiro login após um reset de senh
 01. Criar Usuário
 	- Feito pelo Admin
 	- Endpoint: POST {{API_URL}}/users
-	- Body: 
+	- Body:
+	```
 		{
 			"name": "Admin",
 			"email": "edevaldohbfilho@gmail.com",
 			"isAdmin": true
 		}
+	```
 	- Obs: O admin tem acesso a senha gerada pelo sistema no response da requisição e o usuário criado a recebe via email. 
 02. Login no sistema
 	- Feito pelo novo usuário
 	- Endpoint: POST {{API_URL}}/token/access
 	- Body: 
+	```
 		{
 			"email": "<email.usuario>@<provedor>.com",
 			"password": "<senha.enviada.no.email>"
 		}
+	```
 	- Obs: Ao acessar pela primeira vez o sistema retornará os dados desses usuário e um token para o endpoint de ação de reset de senha
 03. Escolhendo nova senha
 	- Feito pelo novo usuário
 	- Endpoint: PUT {{API_URL}}/reset-password/action
-	- Body: 
+	- Body:
+	```
 		{
 			"oldPassword": "<senha.enviada.no.email",
 			"newPassword": "<nova.senha>"
 		}
+	```
 	- Obs: O sistema salvará a nova senha de forma encriptada. Após esse passo, o usuário já está apto para fazer login com sua senha atualizada no sistema.
 04. Login no sistema
 	- Feito pelo novo usuário
 	- Endpoint: POST {{API_URL}}/token/access
-	- Body: 
+	- Body:
+	```
 		{
 			"email": "<email.usuario>@<provedor>.com",
 			"password": "<nova.senha>"
 		}
+	```
 	- Obs: Esse passo, apesar de explícito na API, funcionando juntamente com um frontend deve ser implicito, sendo feito automaticamente após o passo 3.
 
 
