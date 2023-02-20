@@ -1,7 +1,7 @@
-import { Router } from 'express';
+import UniversitiesService from './universities.service.js';
 import { success, badRequest } from '../utils/reponsePattern/responseStatusCode.js';
 import message from '../utils/reponsePattern/responseMessage.js'
-import UniversitiesService from './universities.service.js';
+
 
 class UniversitiesController {
     async create (req, res) {
@@ -10,7 +10,7 @@ class UniversitiesController {
 
             if(!aux) {
                 throw {
-                    statusCode: statusCode.badRequest,
+                    statusCode: badRequest,
                     message: message[0]
                 };
             }
@@ -86,7 +86,7 @@ class UniversitiesController {
 
             if(!id) {
                 throw {
-                    statusCode: statusCode.badRequest,
+                    statusCode: badRequest,
                     message: message[0]
                 };
             }
@@ -112,7 +112,7 @@ class UniversitiesController {
 
             if(!id) {
                 throw {
-                    statusCode: statusCode.badRequest,
+                    statusCode: badRequest,
                     message: message[0]
                 };
             }

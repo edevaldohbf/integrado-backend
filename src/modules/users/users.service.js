@@ -1,4 +1,3 @@
-import { Router } from 'express';
 import UsersModel from './users.model.js';
 import { success, badRequest } from '../utils/reponsePattern/responseStatusCode.js';
 import { hashPassword } from '../utils/password.js';
@@ -37,13 +36,22 @@ class UsersService {
 
         const totalItems = await UsersModel.count();
 
+        const totalPages = Math.ceil(totalItems / perPage);
+
+        if (page + 1 > totalPages) {
+            throw {
+                statusCode: badRequest,
+                message: message[0]
+            };
+        }
+
         return {
             ...readUsers,
             meta: {
                 totalItems: totalItems,
                 itemPageCount: readUsers.length,
                 maxItemsPerPage: perPage,
-                totalPages: Math.ceil(totalItems / perPage),
+                totalPages: totalPages,
                 currentPage: page + 1
             }
         };

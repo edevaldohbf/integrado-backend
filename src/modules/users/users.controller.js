@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { success, badRequest } from '../utils/reponsePattern/responseStatusCode.js';
 import UsersService from './users.service.js';
+import { success, badRequest } from '../utils/reponsePattern/responseStatusCode.js';
+
 
 class UsersController {
     async create (req, res) {
@@ -9,7 +9,7 @@ class UsersController {
 
             if(!aux) {
                 throw {
-                    statusCode: statusCode.badRequest,
+                    statusCode: badRequest,
                     message: message[0]
                 };
             }
@@ -80,7 +80,7 @@ class UsersController {
 
             if ((!id) || (req.body.password)){
                 throw {
-                    statusCode: statusCode.badRequest,
+                    statusCode: badRequest,
                     message: message[0]
                 };
             }
@@ -106,7 +106,7 @@ class UsersController {
 
             if(!id) {
                 throw {
-                    statusCode: statusCode.badRequest,
+                    statusCode: badRequest,
                     message: message[0]
                 };
             }

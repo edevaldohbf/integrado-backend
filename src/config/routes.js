@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import { success } from '../modules/utils/reponsePattern/responseStatusCode.js'
-import { universities, users } from '../modules/index.js';
+import { auth, users, universities } from '../modules/index.js';
 
 const router = Router();
 
@@ -12,7 +12,11 @@ router.get('/', (req, res) => {
 	})
 });
 
-// University CRUD
+// Auth
+router.post('/token/access', auth.accessToken)
+router.post('/token/refresh', auth.refreshToken)
+
+// User CRUD
 router.post('/users', users.create)
 router.get('/users', users.readAll)
 router.get('/users/:id', users.readById)
