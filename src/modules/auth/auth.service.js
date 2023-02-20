@@ -41,6 +41,11 @@ class UniversitiesService {
             };
         }
 
+        token.id = authUser._id;
+        token.name = authUser.name;
+        token.isAdmin = authUser.isAdmin;
+        token.isFirstAcess = authUser.isFirstAcess;
+
         if (authUser.isFirstAcess) {
             token.resetPasswordToken = await generateToken(authUser._id, authUser.email, 'reset', accessTokenTimeExp)
         }
