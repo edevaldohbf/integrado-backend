@@ -1,10 +1,10 @@
 import UsersModel from './users.model.js';
 import { success, badRequest } from '../utils/reponsePattern/responseStatusCode.js';
-import { hashPassword } from '../utils/password.js';
+import { hashPassword, generatePassword } from '../utils/password.js';
 
 class UsersService {
     async create (reqUser) {
-        const passwordDefault = Math.abs(Math.floor(Math.random() * 999999) + 100000);
+        const passwordDefault = generatePassword();
         const hashedPassword = await hashPassword(String(passwordDefault));
 
 		const createdUser = await UsersModel.create({
@@ -74,7 +74,7 @@ class UsersService {
         const updatedUser = await UsersModel.findByIdAndUpdate({ _id: id }, {
             ...reqUser,
             updatedAt: new Date
-    }).select('-__v -password');
+        }).select('-__v -password');
 
         if(!updatedUser) {
             throw {

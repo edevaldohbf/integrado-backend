@@ -99,3 +99,44 @@ export async function verifyRefresh(token) {
         };
     }
 }
+
+export async function verifyResetPassword(req, res, next) {
+    try {
+        let token = req.headers.authorization;
+        token = token?.split(' ')[1];
+
+        if (!token) {
+            throw {
+                statusCode: unauthorized,
+                message: message[3]
+            };
+        }
+
+        const data = decode(token);
+
+        if ((!data) || (data.type != 'reset')) {
+            throw {
+                statusCode: unauthorized,
+                message: message[2]
+            };
+        }
+
+        try {
+            verify(token, jwtSecret);
+        }
+        catch (e) {
+            throw {
+                statusCode: unauthorized,
+                message: message[2]
+            };
+        }
+    }
+    catch (e) {
+        return res.send({
+            statusCode: e.statusCode,
+            data: e.message
+        });
+    }
+
+    next();
+}

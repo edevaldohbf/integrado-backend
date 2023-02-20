@@ -7,10 +7,7 @@ import { accessTokenTimeExp, refreshTokenTimeExp } from '../../config/env.js'
 
 class UniversitiesService {
     async accessToken (email, password) {
-        const token = {
-            accessToken: false,
-            refreshToken: false
-        };
+        const token = {};
 
         if ((!email) || (!password)) {
             throw {
@@ -44,16 +41,19 @@ class UniversitiesService {
             };
         }
 
-        token.accessToken = await generateToken(authUser._id, authUser.email, 'access', accessTokenTimeExp);
-        token.refreshToken = await generateToken(authUser._id, authUser.email, 'refresh', refreshTokenTimeExp);
+        if (authUser.isFirstAcess) {
+            token.resetPasswordToken = await generateToken(authUser._id, authUser.email, 'reset', accessTokenTimeExp)
+        }
+        else {
+            token.accessToken = await generateToken(authUser._id, authUser.email, 'access', accessTokenTimeExp);
+            token.refreshToken = await generateToken(authUser._id, authUser.email, 'refresh', refreshTokenTimeExp);
+        }
         
         return token;
     }
 
     async refreshToken (reqToken) {
-        const token = {
-            accessToken: false,
-        };
+        const token = {};
 
         if (!reqToken) {
             throw {

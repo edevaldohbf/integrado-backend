@@ -1,17 +1,17 @@
-import AuthService from './auth.service.js';
+import ResetPasswordService from './resetPassword.service.js';
 import { success, badRequest } from '../utils/reponsePattern/responseStatusCode.js';
 import message from '../utils/reponsePattern/responseMessage.js'
 
-class AuthController {
-    async accessToken (req, res) {
+class ResetPasswordController {
+    async request (req, res) {
         try {
-            const { email, password } = req.body;
-
-            const auth = await AuthService.accessToken(email, password);
+            const { email } = req.body;
+    
+            await ResetPasswordService.request(email);
     
             return res.send({
                 statusCode: success,
-                data: auth
+                data: 'Caso este endereço de e-mail esteja registrado no ssitema você receberá um e-mail com as próximas instruções'
             });
         }
         catch (e) {
@@ -22,15 +22,15 @@ class AuthController {
         }
     }
 
-    async refreshToken (req, res) {
+    async action (req, res) {
         try {
-            const { token } = await req.body;
-
-            const auth = await AuthService.refreshToken(token);
+            const { oldPassword, newPassword } = req.body;
+    
+            let aux = await ResetPasswordService.action(oldPassword, newPassword);
     
             return res.send({
                 statusCode: success,
-                data: auth
+                data: aux
             });
         }
         catch (e) {
@@ -42,4 +42,4 @@ class AuthController {
     }
 }
 
-export default new AuthController;
+export default new ResetPasswordController;

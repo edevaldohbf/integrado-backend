@@ -1,6 +1,7 @@
 import express, { Router } from 'express';
 import { success } from '../modules/utils/reponsePattern/responseStatusCode.js'
-import { auth, users, universities } from '../modules/index.js';
+import { auth, resetPassword, users, universities } from '../modules/index.js';
+import { verifyToken, verifyResetPassword } from '../modules/utils/token.js';
 
 const router = Router();
 
@@ -16,18 +17,22 @@ router.get('/', (req, res) => {
 router.post('/token/access', auth.accessToken)
 router.post('/token/refresh', auth.refreshToken)
 
+// Reset Password
+router.post('/reset-password/request', resetPassword.request)
+router.put('/reset-password/action', verifyResetPassword, resetPassword.action)
+
 // User CRUD
-router.post('/users', users.create)
-router.get('/users', users.readAll)
-router.get('/users/:id', users.readById)
-router.put('/users/:id', users.update)
-router.delete('/users/:id', users.delete)
+router.post('/users', verifyToken, users.create)
+router.get('/users', verifyToken, users.readAll)
+router.get('/users/:id', verifyToken, users.readById)
+router.put('/users/:id', verifyToken, users.update)
+router.delete('/users/:id', verifyToken, users.delete)
 
 // University CRUD
-router.post('/universities', universities.create)
-router.get('/universities', universities.readAll)
-router.get('/universities/:id', universities.readById)
-router.put('/universities/:id', universities.update)
-router.delete('/universities/:id', universities.delete)
+router.post('/universities', verifyToken, universities.create)
+router.get('/universities', verifyToken, universities.readAll)
+router.get('/universities/:id', verifyToken, universities.readById)
+router.put('/universities/:id', verifyToken, universities.update)
+router.delete('/universities/:id', verifyToken, universities.delete)
 
 export default router;

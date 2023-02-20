@@ -2,7 +2,6 @@ import UniversitiesService from './universities.service.js';
 import { success, badRequest } from '../utils/reponsePattern/responseStatusCode.js';
 import message from '../utils/reponsePattern/responseMessage.js'
 
-
 class UniversitiesController {
     async create (req, res) {
         try {
