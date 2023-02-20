@@ -5,8 +5,6 @@ import { success, badRequest } from '../utils/reponsePattern/responseStatusCode.
 class UsersController {
     async create (req, res) {
         try {
-            console.log(req.isAdmin)
-
             let aux = await UsersService.create(req.body);
 
             if(!aux) {

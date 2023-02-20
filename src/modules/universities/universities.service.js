@@ -25,7 +25,7 @@ class UniversitiesService {
                 name: 'asc'
             });
 
-        const totalItems = await UniversitiesModel.count();
+        const totalItems = await UniversitiesModel.find(filter).count();
 
         const totalPages = Math.ceil(totalItems / perPage);
 

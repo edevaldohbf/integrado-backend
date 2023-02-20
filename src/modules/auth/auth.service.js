@@ -47,7 +47,7 @@ class UniversitiesService {
         token.isFirstAcess = authUser.isFirstAcess;
 
         if (authUser.isFirstAcess) {
-            token.resetPasswordToken = await generateToken(authUser._id, authUser.email, 'reset', accessTokenTimeExp)
+            token.resetPasswordToken = await generateToken(authUser._id, authUser.email, authUser.isAdmin, 'reset', accessTokenTimeExp)
         }
         else {
             token.accessToken = await generateToken(authUser._id, authUser.email, authUser.isAdmin, 'access', accessTokenTimeExp);

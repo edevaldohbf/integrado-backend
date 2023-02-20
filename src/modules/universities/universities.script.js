@@ -102,5 +102,7 @@ export async function importUniversities (execute) {
 	}
 }
 
-startDb();
-importUniversities()
+export default async function (execute) {
+	startDb();
+	importUniversities(true);
+}

@@ -1,10 +1,11 @@
 import UsersModel from './users.model.js';
 import { success, badRequest } from '../utils/reponsePattern/responseStatusCode.js';
 import { hashPassword, generatePassword } from '../utils/password.js';
+import ResetPasswordService from '../resetPassword/resetPassword.service.js';
 
 class UsersService {
     async create (reqUser) {
-        const passwordDefault = generatePassword();
+        const passwordDefault = await generatePassword();
         const hashedPassword = await hashPassword(String(passwordDefault));
 
 		const createdUser = await UsersModel.create({
@@ -14,6 +15,8 @@ class UsersService {
             isFirstAcess: true,
             createdAt: new Date
         });
+
+        await ResetPasswordService.request(reqUser.email)
 
         return {
             ...createdUser._doc,
